@@ -1,0 +1,17 @@
+{
+  "name": "scraper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "minimist": "^1.2.5",
+    "shelljs": "^0.8.4",
+    "website-scraper": "^4.2.3",
+    "website-scraper-puppeteer": "^0.1.5"
+  }
+}
