@@ -22,6 +22,7 @@ if (args.help || !args.url) {
     console.log("--url              - Url to scrape. [REQUIRED]")
     console.log("-u, --user         - username, Default: admin. Pass --user '' to override")
     console.log("-p, --pass         - password, Default: admin")
+    console.log("-o, --output       - Output folder. Default: output")
     console.log("                     password can also be set with env var TOMATOKETCHUP_PASS if you don't want password showing up in command history")
     console.log("                     env var has higher precedence than CLI")
     console.log("-s, --scrapeonly   - Scrape website only - don't apply fixes. Default: false")
