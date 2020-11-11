@@ -5,23 +5,41 @@ var parseArgs = require('minimist')
 var shell = require('shelljs')
 
 var args = parseArgs(process.argv.slice(2), {
-    boolean: [ "headless", "fixesonly", "scrapeonly" ],
+    boolean: [ "headless", "fixesonly", "scrapeonly", "help", "verbose"],
     alias: {
         "h": "headless",
         "o": "output",
         "u": "user",
         "f": "fixesonly",
         "s": "scrapeonly",
-        "p": "pass"
+        "p": "pass",
+        "v": "verbose"
     }
 })
-args.url = process.env.SCRAPER_URL || args.url;
+if (args.help || !args.url) {
+    console.log("TomatoKetchup - snapshot your router webui pages with values")
+    console.log("")
+    console.log("--url              - Url to scrape. [REQUIRED]")
+    console.log("-u, --user         - username, Default: admin. Pass --user '' to override")
+    console.log("-p, --pass         - password, Default: admin")
+    console.log("                     password can also be set with env var TOMATOKETCHUP_PASS if you don't want password showing up in command history")
+    console.log("                     env var has higher precedence than CLI")
+    console.log("-s, --scrapeonly   - Scrape website only - don't apply fixes. Default: false")
+    console.log("-f, --fixesonly    - Only apply fixes on downloaded site; don't scrape. Default: false")
+    console.log("-h, --headless     - run chrome headless. Default: true")
+    console.log("-v, --verbose      - Verbose; print every url visited or skipped. Default: true")
+    return 0
+}
+args.url = process.env.TOMATOKETCHUP_PASS || args.url;
 args.fixesonly = args.fixesonly || false;
 args.scrapeonly = args.scrapeonly || false;
 args.output = args.output || "output"
 args.headless = args.headless || true;
+args.user = args.user || "admin"
+args.pass = process.env.SCRAPER_PASS || args.pass || "admin"
+args.verbose = args.verbose || true;
 headers = {}
-if (args.user) {
+if (args.user != "") {
     var auth = Buffer.from(`${args.user}:${args.pass}`).toString("base64");
     headers.Authorization = `basic ${auth}`
 }
@@ -72,9 +90,9 @@ scrape({
     urlFilter: function(url) {
         var isSameSite = url.indexOf(args.url) === 0
         if (isSameSite) {
-            console.log(url);
+            if (args.verbose) console.log(url);
         } else {
-            console.log(`Skipping ${url}`);
+            if (args.verbose) console.log(`Skipping ${url}`);
         }
         return isSameSite;
     },
