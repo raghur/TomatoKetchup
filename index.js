@@ -42,7 +42,7 @@ args.verbose = args.verbose || true;
 headers = {}
 if (args.user != "") {
     var auth = Buffer.from(`${args.user}:${args.pass}`).toString("base64");
-    headers.Authorization = `basic ${auth}`
+    headers.Authorization = `Basic ${auth}`
 }
 
 function cleanup() {
